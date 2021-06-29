@@ -6,7 +6,7 @@
 /*   By: jfritz <jfritz@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 09:16:19 by jfritz            #+#    #+#             */
-/*   Updated: 2021/06/29 18:56:09 by jfritz           ###   ########.fr       */
+/*   Updated: 2021/06/29 18:56:45 by jfritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_return_zero_emptystring(char **line)
 	return (0);
 }
 
-void	ft_get_rpgrogess(char **rprogress, char *buffer)
+void	ft_set_rprogress(char **rprogress, char *buffer)
 {
 	if (!*rprogress)
 		*rprogress = ft_strdup(buffer);
@@ -89,7 +89,7 @@ int	get_next_line(int fd, char **line)
 	while (result_int > 0)
 	{
 		buffer[result_int] = '\0';
-		ft_get_rpgrogess(&rprogress[fd], buffer);
+		ft_set_rprogress(&rprogress[fd], buffer);
 		if (ft_strchr(rprogress[fd], '\n'))
 			break ;
 		result_int = read(fd, buffer, BUFFER_SIZE);
