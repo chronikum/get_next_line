@@ -6,7 +6,7 @@
 /*   By: jfritz <jfritz@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 09:16:19 by jfritz            #+#    #+#             */
-/*   Updated: 2021/06/29 13:44:25 by jfritz           ###   ########.fr       */
+/*   Updated: 2021/06/29 18:21:53 by jfritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	*ft_next_line(char *rprogress, char **line, int *result_int)
 	return (rprogress);
 }
 
-int			get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*rprogress[MAX_FILEDESCRIPTOR];
 	int			result_int;
@@ -77,7 +77,8 @@ int			get_next_line(int fd, char **line)
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if ((!line) || (!(buffer)))
 		return (-1);
-	while ((result_int = read(fd, buffer, BUFFER_SIZE)) > 0)
+	result_int = read(fd, buffer, BUFFER_SIZE);
+	while (result_int > 0)
 	{
 		buffer[result_int] = '\0';
 		if (!rprogress[fd])
@@ -86,6 +87,7 @@ int			get_next_line(int fd, char **line)
 			rprogress[fd] = ft_strjoin(rprogress[fd], buffer);
 		if (ft_strchr(rprogress[fd], '\n'))
 			break ;
+		result_int = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
 	if ((result_int == 0 && !rprogress[fd]))
