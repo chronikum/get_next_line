@@ -6,21 +6,11 @@
 /*   By: jfritz <jfritz@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 09:16:19 by jfritz            #+#    #+#             */
-/*   Updated: 2021/06/29 18:21:53 by jfritz           ###   ########.fr       */
+/*   Updated: 2021/06/29 18:56:09 by jfritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static char	*ft_freeprogress(char *rprogress)
-{
-	if (rprogress)
-	{
-		free(rprogress);
-		rprogress = NULL;
-	}
-	return (rprogress);
-}
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -58,17 +48,35 @@ static char	*ft_next_line(char *rprogress, char **line, int *result_int)
 		rprogress = temp;
 		*result_int = 1;
 		if (rprogress[0] == '\0')
-			rprogress = ft_freeprogress(rprogress);
+		{
+			free(rprogress);
+			rprogress = NULL;
+		}
 		return (rprogress);
 	}
 	*result_int = 0;
-	rprogress = ft_freeprogress(rprogress);
+	free(rprogress);
+	rprogress = NULL;
 	return (rprogress);
+}
+
+int	ft_return_zero_emptystring(char **line)
+{
+	*line = ft_strdup("");
+	return (0);
+}
+
+void	ft_get_rpgrogess(char **rprogress, char *buffer)
+{
+	if (!*rprogress)
+		*rprogress = ft_strdup(buffer);
+	else
+		*rprogress = ft_strjoin(*rprogress, buffer);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*rprogress[MAX_FILEDESCRIPTOR];
+	static char	*rprogress[MAXFD];
 	int			result_int;
 	char		*buffer;
 
@@ -81,20 +89,14 @@ int	get_next_line(int fd, char **line)
 	while (result_int > 0)
 	{
 		buffer[result_int] = '\0';
-		if (!rprogress[fd])
-			rprogress[fd] = ft_strdup(buffer);
-		else
-			rprogress[fd] = ft_strjoin(rprogress[fd], buffer);
+		ft_get_rpgrogess(&rprogress[fd], buffer);
 		if (ft_strchr(rprogress[fd], '\n'))
 			break ;
 		result_int = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
 	if ((result_int == 0 && !rprogress[fd]))
-	{
-		*line = ft_strdup("");
-		return (0);
-	}
+		return (ft_return_zero_emptystring(line));
 	if (result_int < 0)
 		return (-1);
 	rprogress[fd] = ft_next_line(rprogress[fd], line, &result_int);
