@@ -6,17 +6,15 @@
 /*   By: jfritz <jfritz@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 09:17:01 by jfritz            #+#    #+#             */
-/*   Updated: 2021/06/29 18:50:38 by jfritz           ###   ########.fr       */
+/*   Updated: 2021/06/30 12:34:55 by jfritz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 # define MAXFD	4096
 
